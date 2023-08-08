@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page title</title>
-    <!-- Include your compiled CSS or the separate stylesheets you intend to use -->
-    <link rel="stylesheet" href="./styles.css" />
-
-    <!-- Include your JavaScript files -->
-    <script type="module" src="./js/index.js"></script>
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page title</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <script type="module" src="./js/index.js"></script>
+</head>
+<body>
+  <div class="container">
     <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit">Search</button>
+      <div class="search">
+        <input
+          type="text"
+          name="searchQuery"
+          autocomplete="off"
+          placeholder="Search images..."
+          class="search-field"
+        />
+        <button type="submit" class="search-button">
+          <svg class="search-icon" width="24" height="24">
+            <use href="../svg/search.svg#search-icon"></use>
+          </svg>          
+        </button>
+      </div>
     </form>
-  </body>
+  </div>
+</body>
 </html>
