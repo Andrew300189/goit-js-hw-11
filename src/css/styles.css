@@ -64,7 +64,7 @@ body, form {
 }
 
 .photo-card img {
-  max-width: 100%;
+  width: 100%;
   border-radius: 4px;
 }
 
@@ -73,10 +73,8 @@ body, form {
   justify-content: space-around;
 }
 
-.info-wrap p{
+.info-wrap p {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
-
