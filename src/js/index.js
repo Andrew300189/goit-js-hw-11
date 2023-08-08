@@ -5,15 +5,14 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const searchForm = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.load-more');
 
 let page = 1;
 let currentQuery = '';
+let isLoading = false;
 
 const lightbox = new SimpleLightbox('.photo-card a');
 
 searchForm.addEventListener('submit', handleFormSubmit);
-loadMoreBtn.addEventListener('click', loadMoreImages);
 
 async function handleFormSubmit(event) {
   event.preventDefault();
@@ -32,10 +31,17 @@ async function handleFormSubmit(event) {
   await fetchImages(searchQuery);
 }
 
-async function loadMoreImages() {
-  page += 1;
-  await fetchImages(currentQuery, page);
-  scrollToNextPage();
+window.addEventListener('scroll', handleScroll);
+
+async function handleScroll() {
+  const isBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
+
+  if (isBottom && !isLoading) {
+    isLoading = true;
+    page += 1;
+    await fetchImages(currentQuery, page);
+    isLoading = false;
+  }
 }
 
 async function fetchImages(query, page = 1) {
@@ -53,16 +59,14 @@ async function fetchImages(query, page = 1) {
     renderImages(images);
 
     if (images.length < 40) {
-      loadMoreBtn.style.display = 'none';
       Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-    } else {
-      loadMoreBtn.style.display = 'block';
     }
     
-    Notiflix.Notify.success(`Hooray! We found ${response.data.totalHits} images.`);
+    isLoading = false;
   } catch (error) {
     console.error('Error fetching images:', error);
     Notiflix.Notify.failure('An error occurred while fetching images. Please try again later.');
+    isLoading = false;
   }
 }
 
@@ -89,13 +93,4 @@ function renderImages(images) {
 
 function clearGallery() {
   gallery.innerHTML = '';
-}
-
-function scrollToNextPage() {
-  const { height: cardHeight } = document.querySelector('.gallery').firstElementChild.getBoundingClientRect();
-
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
 }
