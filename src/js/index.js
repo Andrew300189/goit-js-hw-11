@@ -73,17 +73,29 @@ async function fetchImages(query, page = 1) {
 function renderImages(images) {
   const imageMarkup = images
     .map(image => `
-      <div class="photo-card">
-        <a href="${image.largeImageURL}" title="${image.tags}" data-lightbox="image">
-          <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
-        </a>
-        <div class="info">
-          <p class="info-item"><b>Likes:</b> ${image.likes}</p>
-          <p class="info-item"><b>Views:</b> ${image.views}</p>
-          <p class="info-item"><b>Comments:</b> ${image.comments}</p>
-          <p class="info-item"><b>Downloads:</b> ${image.downloads}</p>
-        </div>
+    <div class="photo-card">
+    <a href="${image.largeImageURL}" title="${image.tags}" data-lightbox="image">
+      <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+    </a>
+    <div class="info">
+      <div class="info-wrap">
+        <p class="info-item"><b>Likes:</b></p>
+        <p>${image.likes}</p>
       </div>
+      <div class="info-wrap">
+        <p class="info-item"><b>Views:</b></p>
+        <p>${image.views}</p>
+      </div>
+      <div class="info-wrap">
+        <p class="info-item"><b>Comments:</b></p>
+        <p>${image.comments}</p>
+      </div>
+      <div class="info-wrap">
+        <p class="info-item"><b>Downloads:</b></p>
+        <p>${image.downloads}</p>
+      </div>
+    </div>
+  </div>  
     `)
     .join('');
 

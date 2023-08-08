@@ -73,3 +73,10 @@ body, form {
   justify-content: space-around;
 }
 
+.info-wrap p{
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
