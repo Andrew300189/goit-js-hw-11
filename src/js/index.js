@@ -2,6 +2,7 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { initScroll, shouldLoadMore } from './scroll';
 
 const searchForm = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
@@ -10,7 +11,11 @@ let page = 1;
 let currentQuery = '';
 let isLoading = false;
 
-const lightbox = new SimpleLightbox('.photo-card a');
+const lightbox = new SimpleLightbox('.photo-card a',  {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});
 
 searchForm.addEventListener('submit', handleFormSubmit);
 
@@ -34,9 +39,9 @@ async function handleFormSubmit(event) {
 window.addEventListener('scroll', handleScroll);
 
 async function handleScroll() {
-  const isBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
+  const isNearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 400;
 
-  if (isBottom && !isLoading) {
+  if (isNearBottom && !isLoading && shouldLoadMore(page)) {
     isLoading = true;
     page += 1;
     await fetchImages(currentQuery, page);
@@ -47,7 +52,7 @@ async function handleScroll() {
 async function fetchImages(query, page = 1) {
   try {
     const apiKey = '38721909-f69e4340e26f5a05edebcf59f';
-    const response = await axios.get(`https://pixabay.com/api/?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`);
+    const response = await axios.get(`https://pixabay.com/api/?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}`);
     
     const images = response.data.hits;
     
@@ -57,16 +62,9 @@ async function fetchImages(query, page = 1) {
     }
 
     renderImages(images);
-
-    if (images.length < 40) {
-      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-    }
-    
-    isLoading = false;
   } catch (error) {
     console.error('Error fetching images:', error);
     Notiflix.Notify.failure('An error occurred while fetching images. Please try again later.');
-    isLoading = false;
   }
 }
 
