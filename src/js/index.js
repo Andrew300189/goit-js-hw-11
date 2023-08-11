@@ -48,6 +48,7 @@ async function handleScroll() {
     isLoading = false;
   }
 }
+initScroll(currentQuery);
 
 async function fetchImages(query, page = 1) {
   try {
@@ -71,10 +72,12 @@ async function fetchImages(query, page = 1) {
 function renderImages(images) {
   const imageMarkup = images
     .map(image => `
-    <div class="photo-card">
+  <div class="photo-card">
+    <div class="image-wrap">
     <a href="${image.largeImageURL}" title="${image.tags}" data-lightbox="image">
       <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
     </a>
+    </div>
     <div class="info">
       <div class="info-wrap">
         <p class="info-item"><b>Likes:</b></p>

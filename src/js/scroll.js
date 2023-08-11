@@ -20,5 +20,5 @@ export async function initScroll(query) {
 
 export function shouldLoadMore(page) {
   const totalPages = Math.ceil(totalHits / perPage);
-  return page > totalPages;
+  return page < totalPages;
 }
