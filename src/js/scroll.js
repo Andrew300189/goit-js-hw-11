@@ -1,8 +1,19 @@
-
 import axios from 'axios';
 
 let totalHits = 0;
 const perPage = 40;
+
+export async function initScroll(query, handleScrollFunction) {
+  if (query.trim() !== '') {
+    await fetchTotalHits(query);
+    handleScrollFunction();
+  }
+}
+
+export function shouldLoadMore(page) {
+  const totalPages = Math.ceil(totalHits / perPage);
+  return page < totalPages;
+}
 
 async function fetchTotalHits(query) {
   try {
@@ -12,14 +23,4 @@ async function fetchTotalHits(query) {
   } catch (error) {
     console.error('Error fetching total hits:', error);
   }
-}
-
-export async function initScroll(query) {
-  await fetchTotalHits(query);
-  handleScroll(query);
-}
-
-export function shouldLoadMore(page) {
-  const totalPages = Math.ceil(totalHits / perPage);
-  return page < totalPages;
 }

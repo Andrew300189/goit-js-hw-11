@@ -34,6 +34,7 @@ async function handleFormSubmit(event) {
 
   clearGallery();
   await fetchImages(searchQuery);
+  initScroll(currentQuery, handleScroll); // Initialize scroll again after form submission
 }
 
 window.addEventListener('scroll', handleScroll);
@@ -48,7 +49,7 @@ async function handleScroll() {
     isLoading = false;
   }
 }
-initScroll(currentQuery);
+initScroll(currentQuery, handleScroll);
 
 async function fetchImages(query, page = 1) {
   try {
@@ -58,7 +59,9 @@ async function fetchImages(query, page = 1) {
     const images = response.data.hits;
     
     if (images.length === 0) {
-      Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+      if (page === 1) {
+        Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+      }
       return;
     }
 
