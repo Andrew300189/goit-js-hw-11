@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 let totalHits = 0;
@@ -15,7 +16,7 @@ async function fetchTotalHits(query) {
 
 export async function initScroll(query) {
   await fetchTotalHits(query);
-  window.addEventListener('scroll', () => handleScroll(query));
+  handleScroll(query);
 }
 
 export function shouldLoadMore(page) {
