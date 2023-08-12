@@ -11,7 +11,7 @@ let page = 1;
 let currentQuery = '';
 let isLoading = false;
 
-const lightbox = new SimpleLightbox('.photo-card a',  {
+const lightbox = new SimpleLightbox('.photo-card a', {
   captionsData: 'alt',
   captionPosition: 'bottom',
   captionDelay: 250,
@@ -21,7 +21,7 @@ searchForm.addEventListener('submit', handleFormSubmit);
 
 async function handleFormSubmit(event) {
   event.preventDefault();
-  
+
   const formData = new FormData(event.currentTarget);
   const searchQuery = formData.get('searchQuery');
 
@@ -33,8 +33,10 @@ async function handleFormSubmit(event) {
   page = 1;
 
   clearGallery();
-  await fetchImages(searchQuery);
-  initScroll(currentQuery, handleScroll); // Initialize scroll again after form submission
+  await fetchImages(searchQuery, page);
+
+  // Initialize scroll after fetching images
+  initScroll(currentQuery, handleScroll);
 }
 
 window.addEventListener('scroll', handleScroll);
@@ -49,15 +51,15 @@ async function handleScroll() {
     isLoading = false;
   }
 }
-initScroll(currentQuery, handleScroll);
 
 async function fetchImages(query, page = 1) {
   try {
     const apiKey = '38721909-f69e4340e26f5a05edebcf59f';
-    const response = await axios.get(`https://pixabay.com/api/?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}`);
-    
+    const perPage = 40;
+    const response = await axios.get(`https://pixabay.com/api/?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`);
+
     const images = response.data.hits;
-    
+
     if (images.length === 0) {
       if (page === 1) {
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
@@ -66,6 +68,10 @@ async function fetchImages(query, page = 1) {
     }
 
     renderImages(images);
+
+    if (page === 1) {
+      await fetchImages(query, 2);
+    }
   } catch (error) {
     console.error('Error fetching images:', error);
     Notiflix.Notify.failure('An error occurred while fetching images. Please try again later.');
