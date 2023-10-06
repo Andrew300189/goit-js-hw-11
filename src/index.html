@@ -1,32 +1,21 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page title</title>
-  <link rel="stylesheet" href="../node_modules/simplelightbox/dist/simple-lightbox.min.css">
-  <link rel="stylesheet" href="./css/styles.css">
-</head>
-<body>
-  <div class="container">
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page title</title>
+    <link rel="stylesheet" href="./sass/index.scss" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
     <form class="search-form" id="search-form">
-      <div class="search">
-        <input
-          type="text"
-          name="searchQuery"
-          autocomplete="off"
-          placeholder="Search images..."
-          class="search-field"
-        />
-        <button type="submit" class="search-button">
-          <img src="../svg/search.svg" alt="Search icon" width="20" height="20">
-        </button>
-      </div>
+      <input
+        type="text"
+        name="searchQuery"
+        autocomplete="off"
+        placeholder="Search images..."
+      />
+      <button type="submit">Search</button>
     </form>
-  </div>
-  <div class="gallery"></div>
-  <script type="module" src="./js/index.js"></script>
-  <script type="module" src="./js/scroll.js"></script>
-</body>
+  </body>
 </html>
